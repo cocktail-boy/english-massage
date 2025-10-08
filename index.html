@@ -226,13 +226,15 @@
             // Auto-scroll playlist container to active item
             if (items[currentTrack]) {
                 const activeItem = items[currentTrack];
-                const itemTop = activeItem.offsetTop;
-                const itemHeight = activeItem.offsetHeight;
-                const containerHeight = playlist.clientHeight;
-                const scrollPosition = itemTop - (containerHeight / 2) + (itemHeight / 2);
+                const containerRect = playlist.getBoundingClientRect();
+                const itemRect = activeItem.getBoundingClientRect();
+                
+                // Calculate relative position
+                const relativeTop = itemRect.top - containerRect.top;
+                const scrollOffset = playlist.scrollTop + relativeTop - (playlist.clientHeight / 2) + (activeItem.offsetHeight / 2);
                 
                 playlist.scrollTo({
-                    top: scrollPosition,
+                    top: scrollOffset,
                     behavior: 'smooth'
                 });
             }
