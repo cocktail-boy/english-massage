@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spa Audio Guide Player</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        .text-display {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            min-height: 100px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .text-display p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin: 0;
+            color: #333;
+        }
+        .audio-controls {
+            margin-bottom: 20px;
+        }
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-prev:hover:not(:disabled) {
+            background: #5a6268;
+        }
+        .btn-next {
+            background: #667eea;
+            color: white;
+        }
+        .btn-next:hover:not(:disabled) {
+            background: #5568d3;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .track-info {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .playlist {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .playlist-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #dee2e6;
+            transition: background 0.2s;
+        }
+        .playlist-item:hover {
+            background: #f8f9fa;
+        }
+        .playlist-item.active {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        .playlist-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 Spa Audio Guide</h1>
+        
+        <div class="text-display">
+            <p id="currentText">Welcome! Select a track to begin.</p>
+        </div>
+        
+        <div class="audio-controls">
+            <div class="track-info">
+                <span id="trackNumber">Track 0 of 48</span>
+            </div>
+            <audio id="audioPlayer" controls>
+                <source id="audioSource" src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="btn-prev" id="prevBtn" onclick="previousTrack()">⏮ Previous</button>
+            <button class="btn-next" id="nextBtn" onclick="nextTrack()">Next ⏭</button>
+        </div>
+        
+        <div class="playlist" id="playlist"></div>
+    </div>
+
+    <script>
+        const audioFiles = [
+            'audio/01_Chapter 1.mp3', 'audio/02_Chapter 1.mp3', 'audio/03_Chapter 1.mp3',
+            'audio/04_Chapter 1.mp3', 'audio/05_Chapter 1.mp3', 'audio/06_Chapter 1.mp3',
+            'audio/07_Chapter 1.mp3', 'audio/08_Chapter 1.mp3', 'audio/09_Chapter 1.mp3',
+            'audio/10_Chapter 1.mp3', 'audio/11_Chapter 1.mp3', 'audio/12_Chapter 1.mp3',
+            'audio/13_Chapter 1.mp3', 'audio/14_Chapter 1.mp3', 'audio/15_Chapter 1.mp3',
+            'audio/16_Chapter 1.mp3', 'audio/17_Chapter 1.mp3', 'audio/18_Chapter 1.mp3',
+            'audio/19_Chapter 1.mp3', 'audio/20_Chapter 1.mp3', 'audio/21_Chapter 1.mp3',
+            'audio/22_Chapter 1.mp3', 'audio/23_Chapter 1.mp3', 'audio/24_Chapter 1.mp3',
+            'audio/25_Chapter 1.mp3', 'audio/26_Chapter 1.mp3', 'audio/27_Chapter 1.mp3',
+            'audio/28_Chapter 1.mp3', 'audio/29_Chapter 1.mp3', 'audio/30_Chapter 1.mp3',
+            'audio/31_Chapter 1.mp3', 'audio/32_Chapter 1.mp3', 'audio/33_Chapter 1.mp3',
+            'audio/34_Chapter 1.mp3', 'audio/35_Chapter 1.mp3', 'audio/36_Chapter 1.mp3',
+            'audio/37_Chapter 1.mp3', 'audio/38_Chapter 1.mp3', 'audio/39_Chapter 1.mp3',
+            'audio/40_Chapter 1.mp3', 'audio/41_Chapter 1.mp3', 'audio/42_Chapter 1.mp3',
+            'audio/43_Chapter 1.mp3', 'audio/44_Chapter 1.mp3', 'audio/45_Chapter 1.mp3',
+            'audio/46_Chapter 1.mp3', 'audio/47_Chapter 1.mp3', 'audio/48_Chapter 1.mp3'
+        ];
+
+        const textLines = [
+            'Upon Arrival',
+            'Please take off your shoes and change into slippers.',
+            'Please have a seat on the couch.',
+            'Would you like something to drink?',
+            'Water.',
+            'Rooibos tea — hot or iced.',
+            'Coffee — hot or iced.',
+            'Menu Explanation',
+            'Our massage sessions start from ninety minutes.',
+            'Here\'s our price list.',
+            'The total time includes an extra thirty minutes for prep time — such as shower, bath, or changing.',
+            'If you\'d like to use the room without a massage, here\'s the room rental fee.',
+            'We offer several types of massage:',
+            'Dry, Shiatsu-style.',
+            'Cream, similar to oil massage.',
+            'And Stretching.',
+            'Optional add-ons include Reflexology, Dry head spa, and Cream head spa — which requires washing your hair afterward.',
+            'Which type of massage would you like today?',
+            'You can also combine different styles if you like.',
+            'Where do you feel most tired or tense today?',
+            'Room Guidance',
+            'Let me show you the sauna room.',
+            'This is the sauna.',
+            'There\'s a warm bath area on the right and a cold bath on the left.',
+            'The restroom is right here.',
+            'Changing',
+            'Please change into these clothes.',
+            'When you\'re ready, please send me a message from the iPad.',
+            'We\'ll start your prep time from the current time.',
+            'That\'s all for the explanation — do you have any questions?',
+            'During Treatment',
+            'We\'ll start with a foot bath. Please have a seat on the couch.',
+            'I\'ll prepare the bed for your massage — please wait just a moment.',
+            'Please lie face down.',
+            'Is the pillow comfortable?',
+            'We also have a face cradle — would you like to switch?',
+            'How\'s the pressure?',
+            'A little stronger, or a little lighter?',
+            'Please let me know anytime if you\'d like me to adjust the pressure.',
+            'Please turn over onto your back.',
+            'I\'ll remove the cushion under your stomach.',
+            'Would you like to use the restroom?',
+            'Would you like some water?',
+            'After Treatment',
+            'That\'s the end of your session. Thank you very much.',
+            'You have about a few minutes left for room use.',
+            'I\'ll bring the check in a few minutes.',
+            'If you\'d like to relax for more than thirty minutes, please send me a message once you\'ve finished changing.'
+        ];
+
+        let currentTrack = 0;
+        const player = document.getElementById('audioPlayer');
+        const source = document.getElementById('audioSource');
+        const textDisplay = document.getElementById('currentText');
+        const trackNumber = document.getElementById('trackNumber');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playlist = document.getElementById('playlist');
+
+        function loadTrack(index) {
+            currentTrack = index;
+            source.src = audioFiles[index];
+            player.load();
+            textDisplay.textContent = textLines[index];
+            trackNumber.textContent = `Track ${index + 1} of ${audioFiles.length}`;
+            updateButtons();
+            updatePlaylist();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentTrack === 0;
+            nextBtn.disabled = currentTrack === audioFiles.length - 1;
+        }
+
+        function updatePlaylist() {
+            const items = playlist.getElementsByClassName('playlist-item');
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.toggle('active', i === currentTrack);
+            }
+            // Auto-scroll playlist container to active item
+            if (items[currentTrack]) {
+                const activeItem = items[currentTrack];
+                const itemTop = activeItem.offsetTop;
+                const itemHeight = activeItem.offsetHeight;
+                const containerHeight = playlist.clientHeight;
+                const scrollPosition = itemTop - (containerHeight / 2) + (itemHeight / 2);
+                
+                playlist.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function previousTrack() {
+            if (currentTrack > 0) {
+                loadTrack(currentTrack - 1);
+                player.play();
+            }
+        }
+
+        function nextTrack() {
+            if (currentTrack < audioFiles.length - 1) {
+                loadTrack(currentTrack + 1);
+                player.play();
+            }
+        }
+
+        function createPlaylist() {
+            audioFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                item.textContent = `${index + 1}. ${textLines[index]}`;
+                item.onclick = () => {
+                    loadTrack(index);
+                    player.play();
+                };
+                playlist.appendChild(item);
+            });
+        }
+
+        player.addEventListener('ended', () => {
+            if (currentTrack < audioFiles.length - 1) {
+                nextTrack();
+            }
+        });
+
+        createPlaylist();
+        loadTrack(0);
+    </script>
+</body>
+</html>
