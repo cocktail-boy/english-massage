@@ -137,24 +137,11 @@
     </div>
 
     <script>
-        const audioFiles = [
-            'audio/01_Chapter 1.mp3', 'audio/02_Chapter 1.mp3', 'audio/03_Chapter 1.mp3',
-            'audio/04_Chapter 1.mp3', 'audio/05_Chapter 1.mp3', 'audio/06_Chapter 1.mp3',
-            'audio/07_Chapter 1.mp3', 'audio/08_Chapter 1.mp3', 'audio/09_Chapter 1.mp3',
-            'audio/10_Chapter 1.mp3', 'audio/11_Chapter 1.mp3', 'audio/12_Chapter 1.mp3',
-            'audio/13_Chapter 1.mp3', 'audio/14_Chapter 1.mp3', 'audio/15_Chapter 1.mp3',
-            'audio/16_Chapter 1.mp3', 'audio/17_Chapter 1.mp3', 'audio/18_Chapter 1.mp3',
-            'audio/19_Chapter 1.mp3', 'audio/20_Chapter 1.mp3', 'audio/21_Chapter 1.mp3',
-            'audio/22_Chapter 1.mp3', 'audio/23_Chapter 1.mp3', 'audio/24_Chapter 1.mp3',
-            'audio/25_Chapter 1.mp3', 'audio/26_Chapter 1.mp3', 'audio/27_Chapter 1.mp3',
-            'audio/28_Chapter 1.mp3', 'audio/29_Chapter 1.mp3', 'audio/30_Chapter 1.mp3',
-            'audio/31_Chapter 1.mp3', 'audio/32_Chapter 1.mp3', 'audio/33_Chapter 1.mp3',
-            'audio/34_Chapter 1.mp3', 'audio/35_Chapter 1.mp3', 'audio/36_Chapter 1.mp3',
-            'audio/37_Chapter 1.mp3', 'audio/38_Chapter 1.mp3', 'audio/39_Chapter 1.mp3',
-            'audio/40_Chapter 1.mp3', 'audio/41_Chapter 1.mp3', 'audio/42_Chapter 1.mp3',
-            'audio/43_Chapter 1.mp3', 'audio/44_Chapter 1.mp3', 'audio/45_Chapter 1.mp3',
-            'audio/46_Chapter 1.mp3', 'audio/47_Chapter 1.mp3', 'audio/48_Chapter 1.mp3'
-        ];
+        // Generate audio file paths with proper URL encoding
+        const audioFiles = Array.from({length: 48}, (_, i) => {
+            const num = String(i + 1).padStart(2, '0');
+            return encodeURI(`audio/${num}_Chapter 1.mp3`);
+        });
 
         const textLines = [
             'Upon Arrival',
