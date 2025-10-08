@@ -51,6 +51,11 @@
             color: #6b4430;
             text-align: center;
             font-weight: 400;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .text-display p.fade-out {
+            opacity: 0;
         }
         .audio-controls {
             margin-bottom: 20px;
@@ -251,12 +256,30 @@
         const nextBtn = document.getElementById('nextBtn');
         const playlist = document.getElementById('playlist');
 
-        function loadTrack(index) {
+        function loadTrack(index, autoPlay = false) {
             currentTrack = index;
-            source.src = audioFiles[index];
-            player.load();
-            textDisplay.textContent = textLines[index];
-            trackNumber.textContent = `Track ${index + 1} of ${audioFiles.length}`;
+            
+            // Fade out text
+            textDisplay.classList.add('fade-out');
+            
+            // Wait for fade out, then update content and fade in
+            setTimeout(() => {
+                source.src = audioFiles[index];
+                player.load();
+                textDisplay.textContent = textLines[index];
+                trackNumber.textContent = `Track ${index + 1} of ${audioFiles.length}`;
+                
+                // Fade in text
+                setTimeout(() => {
+                    textDisplay.classList.remove('fade-out');
+                }, 50);
+                
+                // Auto play if requested
+                if (autoPlay) {
+                    player.play();
+                }
+            }, 500);
+            
             updateButtons();
             updatePlaylist();
         }
@@ -290,15 +313,13 @@
 
         function previousTrack() {
             if (currentTrack > 0) {
-                loadTrack(currentTrack - 1);
-                player.play();
+                loadTrack(currentTrack - 1, true);
             }
         }
 
         function nextTrack() {
             if (currentTrack < audioFiles.length - 1) {
-                loadTrack(currentTrack + 1);
-                player.play();
+                loadTrack(currentTrack + 1, true);
             }
         }
 
@@ -308,8 +329,7 @@
                 item.className = 'playlist-item';
                 item.textContent = `${index + 1}. ${textLines[index]}`;
                 item.onclick = () => {
-                    loadTrack(index);
-                    player.play();
+                    loadTrack(index, true);
                 };
                 playlist.appendChild(item);
             });
