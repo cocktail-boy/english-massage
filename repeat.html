@@ -137,10 +137,9 @@ const playAudio=async(slow)=>{
 
 const repeatMode=async()=>{
   const SR=window.webkitSpeechRecognition||window.SpeechRecognition;
-  await playAudio(false);
   if(!SR)return showMsg('音声認識に対応していません。Chromeをお試しください。');
   
-  showMsg('聞いています...');
+  // Set up recognition first
   const rec=new SR();
   rec.lang='en-US';
   rec.interimResults=false;
@@ -160,6 +159,14 @@ const repeatMode=async()=>{
   };
   
   rec.onerror=e=>showMsg(`認識エラー: ${e.error||'不明'}`);
+  
+  // Show listening message and play audio
+  showMsg('お手本を聞いてください...');
+  await playAudio(false);
+  
+  // Small delay then start recognition
+  await new Promise(resolve=>setTimeout(resolve,300));
+  showMsg('聞いています...');
   try{rec.start();}catch{}
 };
 
