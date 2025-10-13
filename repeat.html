@@ -1,379 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>英語で接客マッサージ – English Practice for Spa Staff</title>
+  <title>英語で接客マッサージ</title>
   <style>
-    :root { 
-      --bg:#fdf8f5; 
-      --card:#fff; 
-      --text:#5d4037; 
-      --muted:#8d6e63; 
-      --brown:#6d4c41; 
-      --brown-dark:#4e342e;
-      --pink:#f8bbd0; 
-      --pink-light:#fce4ec;
-      --pink-dark:#f06292;
-      --border:#efebe9; 
-      --cream:#fff3e0;
-      --good:#f1f8e9; 
-      --good-border:#aed581;
-    }
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",Arial,sans-serif;}
-    .container{max-width:900px;margin:0 auto;padding:16px;}
+    :root{--bg:#fdf8f5;--text:#5d4037;--muted:#8d6e63;--brown:#6d4c41;--brown-dark:#4e342e;--pink:#f8bbd0;--pink-light:#fce4ec;--pink-dark:#f06292;--border:#efebe9;--cream:#fff3e0;--good:#f1f8e9;--good-border:#aed581}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+    .container{max-width:900px;margin:0 auto;padding:16px}
     h1{font-size:22px;margin:0 0 4px;color:var(--brown-dark)}
     .sub{color:var(--muted);font-size:12px;margin-bottom:12px}
-
-    /* Compact toolbar - more subdued */
-    .toolbar{position:sticky;top:0;z-index:10;background:rgba(253,248,245,0.95);backdrop-filter:blur(8px);padding:8px 0;border-bottom:1px solid var(--border);opacity:0.9} 
+    .toolbar{position:sticky;top:0;z-index:10;background:rgba(253,248,245,0.95);backdrop-filter:blur(8px);padding:8px 0;border-bottom:1px solid var(--border);opacity:0.9}
     .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .btn{border-radius:10px;padding:8px 10px;border:1px solid var(--border);background:#fdf5f1;cursor:pointer;font-size:13px;color:var(--muted)}
+    .btn{border-radius:10px;padding:8px 10px;border:1px solid var(--border);background:#fdf5f1;cursor:pointer;font-size:13px;color:var(--muted);transition:opacity 0.2s}
     .btn.primary{background:var(--brown);color:#fff;border-color:var(--brown-dark)}
     .btn:disabled{opacity:0.5;cursor:not-allowed}
-
-    /* Current line card - HIGHLIGHTED */
-    .current{background:linear-gradient(135deg, #fff 0%, var(--pink-light) 100%);border:3px solid var(--brown);border-radius:16px;padding:20px;margin:16px 0;box-shadow:0 4px 20px rgba(110,76,65,0.15)}
+    .current{background:linear-gradient(135deg,#fff 0%,var(--pink-light) 100%);border:3px solid var(--brown);border-radius:16px;padding:20px;margin:16px 0;box-shadow:0 4px 20px rgba(110,76,65,0.15)}
     .titleRow{color:var(--muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
     .en{font-size:24px;margin-top:10px;line-height:1.4;font-weight:600;color:var(--brown-dark)}
     .jp{font-size:17px;color:var(--text);margin-top:6px;line-height:1.5}
-    .feedback{background:var(--cream);border:1px solid var(--pink);padding:8px 10px;border-radius:10px;margin-top:10px;font-size:14px;color:var(--text)}
-    .feedback.good{background:var(--good);border-color:var(--good-border);color:#558b2f;}
-
-    /* Section chips - more subdued */
+    .feedback{background:var(--cream);border:1px solid var(--pink);padding:8px 10px;border-radius:10px;margin-top:10px;font-size:14px;color:var(--text);display:none}
+    .feedback.good{background:var(--good);border-color:var(--good-border);color:#558b2f}
     .chips{display:flex;gap:8px;overflow-x:auto;padding:6px 2px;margin:8px 0}
-    .chip{flex:0 0 auto;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:#fdf5f1;font-size:12px;color:var(--muted);opacity:0.8;transition:all 0.2s}
+    .chip{flex:0 0 auto;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:#fdf5f1;font-size:12px;color:var(--muted);opacity:0.8;transition:all 0.2s;cursor:pointer}
     .chip:hover{opacity:1;background:var(--pink-light)}
     .chip.active{background:var(--pink);color:var(--brown-dark);border-color:var(--pink-dark);opacity:1;font-weight:600}
-
-    /* Line list - more subdued */
-    .list{display:grid;grid-template-columns:1fr;gap:10px}
+    .list{display:grid;gap:10px;margin-top:12px}
     @media(min-width:760px){.list{grid-template-columns:1fr 1fr}}
-    .lineBtn{text-align:left;padding:10px;border-radius:12px;border:1px solid var(--border);background:#fff;opacity:0.7;transition:all 0.2s}
+    .lineBtn{text-align:left;padding:10px;border-radius:12px;border:1px solid var(--border);background:#fff;opacity:0.7;transition:all 0.2s;cursor:pointer}
     .lineBtn:hover{opacity:1;border-color:var(--pink);background:var(--pink-light)}
     .lineBtn.active{border-color:var(--brown);background:#fff9f7;opacity:1}
     .muted{color:var(--muted);font-size:12px}
     .progress{color:var(--muted);font-size:12px;margin-top:8px}
+    .divider{margin-top:24px;padding-top:16px;border-top:2px solid var(--pink-light)}
+    .divider h3{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin:0 0 12px;font-weight:600}
   </style>
 </head>
 <body>
   <div class="container">
     <h1>英語で接客マッサージ</h1>
     <div class="sub">スパ・マッサージの接客英語を練習 – 聞いて、リピートして、すぐにフィードバック！</div>
-
-    <!-- Compact toolbar -->
     <div class="toolbar">
       <div class="bar">
-        <button class="btn primary" id="btn-listen">聞く</button>
-        <button class="btn" id="btn-listen-slow">ゆっくり</button>
-        <button class="btn" id="btn-repeat">リピート</button>
-        <button class="btn" id="btn-prev">◀ 前へ</button>
-        <button class="btn" id="btn-next">次へ ▶</button>
+        <button class="btn primary" id="listen">聞く</button>
+        <button class="btn" id="slow">ゆっくり</button>
+        <button class="btn" id="repeat">リピート</button>
+        <button class="btn" id="prev">◀ 前へ</button>
+        <button class="btn" id="next">次へ ▶</button>
       </div>
     </div>
-
-    <!-- Section chips -->
-    <div id="section-chips" class="chips"></div>
-
-    <!-- Current line -->
+    <div id="chips" class="chips"></div>
     <div class="current">
-      <div class="titleRow" id="title-row"></div>
-      <div class="en" id="line-en"></div>
-      <div class="jp" id="line-jp"></div>
-      <div class="feedback" id="feedback" style="display:none"></div>
+      <div class="titleRow" id="title"></div>
+      <div class="en" id="en"></div>
+      <div class="jp" id="jp"></div>
+      <div class="feedback" id="feedback"></div>
       <div class="progress" id="progress"></div>
     </div>
-
-    <!-- List -->
-    <div style="margin-top:24px;padding-top:16px;border-top:2px solid var(--pink-light)">
-      <h3 style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin:0 0 12px;font-weight:600">他のフレーズ</h3>
-      <div class="list" id="line-list"></div>
+    <div class="divider">
+      <h3>他のフレーズ</h3>
+      <div class="list" id="list"></div>
     </div>
-    <div style="height:28px"></div>
   </div>
-
   <script>
-    // ====== Data with Audio Files ======
-    const sections = [
-      { 
-        titleJP:"【ご来店】", 
-        titleEN:"Upon Arrival", 
-        audioFile: "audio/01_Chapter 1.mp3",
-        lines:[
-          { jp:"靴を脱いでスリッパに履き替えてください。", en:"Please take off your shoes and change into slippers.", audioFile: "audio/02_Chapter 1.mp3" },
-          { jp:"ソファへおかけください。", en:"Please have a seat on the couch.", audioFile: "audio/03_Chapter 1.mp3" },
-          { jp:"何か飲み物は飲みますか？", en:"Would you like something to drink?", audioFile: "audio/04_Chapter 1.mp3" },
-          { jp:"・お水", en:"Water.", audioFile: "audio/05_Chapter 1.mp3" },
-          { jp:"・ルイボスティー（ホット or アイス）", en:"Rooibos tea — hot or iced.", audioFile: "audio/06_Chapter 1.mp3" },
-          { jp:"・コーヒー（ホット or アイス）", en:"Coffee — hot or iced.", audioFile: "audio/07_Chapter 1.mp3" },
-        ]
-      },
-      { 
-        titleJP:"【メニュー説明】", 
-        titleEN:"Menu Explanation", 
-        audioFile: "audio/08_Chapter 1.mp3",
-        lines:[
-          { jp:"マッサージは最短90分からです。", en:"Our massage sessions start from ninety minutes.", audioFile: "audio/09_Chapter 1.mp3" },
-          { jp:"料金はこちらです。", en:"Here's our price list.", audioFile: "audio/10_Chapter 1.mp3" },
-          { jp:"マッサージの時間に、支度（シャワー・お風呂・お着替え）として30分が追加されています。", en:"The total time includes an extra thirty minutes for prep time — such as shower, bath, or changing.", audioFile: "audio/11_Chapter 1.mp3" },
-          { jp:"マッサージをせずお部屋利用のみの料金はこちらです。", en:"If you'd like to use the room without a massage, here's the room rental fee.", audioFile: "audio/12_Chapter 1.mp3" },
-          { jp:"マッサージの種類：ドライ（指圧）、クリーム（オイルのような施術）、ストレッチ。", en:"We offer several types of massage:", audioFile: "audio/13_Chapter 1.mp3" },
-          { jp:"", en:"Dry, Shiatsu-style.", audioFile: "audio/14_Chapter 1.mp3" },
-          { jp:"", en:"Cream, similar to oil massage.", audioFile: "audio/15_Chapter 1.mp3" },
-          { jp:"", en:"And Stretching.", audioFile: "audio/16_Chapter 1.mp3" },
-          { jp:"オプション：リフレクソロジー、ドライヘッドスパ、クリームヘッドスパ（施術後に髪を洗います）。", en:"Optional add-ons include Reflexology, Dry head spa, and Cream head spa — which requires washing your hair afterward.", audioFile: "audio/17_Chapter 1.mp3" },
-          { jp:"今日はどの種類のマッサージにしますか？", en:"Which type of massage would you like today?", audioFile: "audio/18_Chapter 1.mp3" },
-          { jp:"※組み合わせることもできます。", en:"You can also combine different styles if you like.", audioFile: "audio/19_Chapter 1.mp3" },
-          { jp:"今日はどこが疲れていますか？", en:"Where do you feel most tired or tense today?", audioFile: "audio/20_Chapter 1.mp3" },
-        ]
-      },
-      { 
-        titleJP:"【お部屋の案内】", 
-        titleEN:"Room Guidance", 
-        audioFile: "audio/21_Chapter 1.mp3",
-        lines:[
-          { jp:"サウナルームをご案内します。", en:"Let me show you the sauna room.", audioFile: "audio/22_Chapter 1.mp3" },
-          { jp:"これがサウナです。", en:"This is the sauna.", audioFile: "audio/23_Chapter 1.mp3" },
-          { jp:"右側に温かいお風呂、左側に水風呂があります。", en:"There's a warm bath area on the right and a cold bath on the left.", audioFile: "audio/24_Chapter 1.mp3" },
-          { jp:"トイレはこちらです。", en:"The restroom is right here.", audioFile: "audio/25_Chapter 1.mp3" },
-        ]
-      },
-      { 
-        titleJP:"【着替え】", 
-        titleEN:"Changing", 
-        audioFile: "audio/26_Chapter 1.mp3",
-        lines:[
-          { jp:"これに着替えてください。", en:"Please change into these clothes.", audioFile: "audio/27_Chapter 1.mp3" },
-          { jp:"着替えが終わったらiPadからメッセージを送ってください。", en:"When you're ready, please send me a message from the iPad.", audioFile: "audio/28_Chapter 1.mp3" },
-          { jp:"今の時間（〇〇:〇〇）から支度の時間をスタートします。", en:"We'll start your prep time from the current time.", audioFile: "audio/29_Chapter 1.mp3" },
-          { jp:"説明は以上ですが、何か質問はありますか？", en:"That's all for the explanation — do you have any questions?", audioFile: "audio/30_Chapter 1.mp3" },
-        ]
-      },
-      { 
-        titleJP:"【施術中】", 
-        titleEN:"During Treatment", 
-        audioFile: "audio/31_Chapter 1.mp3",
-        lines:[
-          { jp:"フットバスをするのでソファにおかけください。", en:"We'll start with a foot bath. Please have a seat on the couch.", audioFile: "audio/32_Chapter 1.mp3" },
-          { jp:"施術用にベッドを作るので少しお待ちください。", en:"I'll prepare the bed for your massage — please wait just a moment.", audioFile: "audio/33_Chapter 1.mp3" },
-          { jp:"うつ伏せに寝てください。", en:"Please lie face down.", audioFile: "audio/34_Chapter 1.mp3" },
-          { jp:"枕は寝心地どうですか？", en:"Is the pillow comfortable?", audioFile: "audio/35_Chapter 1.mp3" },
-          { jp:"顔を埋める枕もありますが変えますか？", en:"We also have a face cradle — would you like to switch?", audioFile: "audio/36_Chapter 1.mp3" },
-          { jp:"強さはいかがですか？", en:"How's the pressure?", audioFile: "audio/37_Chapter 1.mp3" },
-          { jp:"強くする／弱くする", en:"A little stronger, or a little lighter?", audioFile: "audio/38_Chapter 1.mp3" },
-          { jp:"加減したい時は言ってください。", en:"Please let me know anytime if you'd like me to adjust the pressure.", audioFile: "audio/39_Chapter 1.mp3" },
-          { jp:"仰向けになります。", en:"Please turn over onto your back.", audioFile: "audio/40_Chapter 1.mp3" },
-          { jp:"お腹の下のクッションを抜きますね。", en:"I'll remove the cushion under your stomach.", audioFile: "audio/41_Chapter 1.mp3" },
-          { jp:"トイレは行きますか？", en:"Would you like to use the restroom?", audioFile: "audio/42_Chapter 1.mp3" },
-          { jp:"お水は飲みますか？", en:"Would you like some water?", audioFile: "audio/43_Chapter 1.mp3" },
-        ]
-      },
-      { 
-        titleJP:"【施術後】", 
-        titleEN:"After Treatment", 
-        audioFile: "audio/44_Chapter 1.mp3",
-        lines:[
-          { jp:"以上で施術は終わりです。ありがとうございました。", en:"That's the end of your session. Thank you very much.", audioFile: "audio/45_Chapter 1.mp3" },
-          { jp:"お部屋利用の時間は残り〇分です。", en:"You have about a few minutes left for room use.", audioFile: "audio/46_Chapter 1.mp3" },
-          { jp:"〇分後にお会計を持ってきます。", en:"I'll bring the check in a few minutes.", audioFile: "audio/47_Chapter 1.mp3" },
-          { jp:"（30分以上ゆっくりする場合は、着替え終わったらまたメッセージを送ってください。）", en:"If you'd like to relax for more than thirty minutes, please send me a message once you've finished changing.", audioFile: "audio/48_Chapter 1.mp3" },
-        ]
-      },
-    ];
+const data=[{titleJP:"【ご来店】",titleEN:"Upon Arrival",lines:[{jp:"靴を脱いでスリッパに履き替えてください。",en:"Please take off your shoes and change into slippers.",audio:"audio/02_Chapter 1.mp3"},{jp:"ソファへおかけください。",en:"Please have a seat on the couch.",audio:"audio/03_Chapter 1.mp3"},{jp:"何か飲み物は飲みますか？",en:"Would you like something to drink?",audio:"audio/04_Chapter 1.mp3"},{jp:"・お水",en:"Water.",audio:"audio/05_Chapter 1.mp3"},{jp:"・ルイボスティー（ホット or アイス）",en:"Rooibos tea — hot or iced.",audio:"audio/06_Chapter 1.mp3"},{jp:"・コーヒー（ホット or アイス）",en:"Coffee — hot or iced.",audio:"audio/07_Chapter 1.mp3"}]},{titleJP:"【メニュー説明】",titleEN:"Menu Explanation",lines:[{jp:"マッサージは最短90分からです。",en:"Our massage sessions start from ninety minutes.",audio:"audio/09_Chapter 1.mp3"},{jp:"料金はこちらです。",en:"Here's our price list.",audio:"audio/10_Chapter 1.mp3"},{jp:"マッサージの時間に、支度（シャワー・お風呂・お着替え）として30分が追加されています。",en:"The total time includes an extra thirty minutes for prep time — such as shower, bath, or changing.",audio:"audio/11_Chapter 1.mp3"},{jp:"マッサージをせずお部屋利用のみの料金はこちらです。",en:"If you'd like to use the room without a massage, here's the room rental fee.",audio:"audio/12_Chapter 1.mp3"},{jp:"マッサージの種類：",en:"We offer several types of massage:",audio:"audio/13_Chapter 1.mp3"},{jp:"ドライ（指圧）",en:"Dry, Shiatsu-style.",audio:"audio/14_Chapter 1.mp3"},{jp:"クリーム（オイルのような施術）",en:"Cream, similar to oil massage.",audio:"audio/15_Chapter 1.mp3"},{jp:"ストレッチ",en:"And Stretching.",audio:"audio/16_Chapter 1.mp3"},{jp:"オプション：リフレクソロジー、ドライヘッドスパ、クリームヘッドスパ（施術後に髪を洗います）。",en:"Optional add-ons include Reflexology, Dry head spa, and Cream head spa — which requires washing your hair afterward.",audio:"audio/17_Chapter 1.mp3"},{jp:"今日はどの種類のマッサージにしますか？",en:"Which type of massage would you like today?",audio:"audio/18_Chapter 1.mp3"},{jp:"※組み合わせることもできます。",en:"You can also combine different styles if you like.",audio:"audio/19_Chapter 1.mp3"},{jp:"今日はどこが疲れていますか？",en:"Where do you feel most tired or tense today?",audio:"audio/20_Chapter 1.mp3"}]},{titleJP:"【お部屋の案内】",titleEN:"Room Guidance",lines:[{jp:"サウナルームをご案内します。",en:"Let me show you the sauna room.",audio:"audio/22_Chapter 1.mp3"},{jp:"これがサウナです。",en:"This is the sauna.",audio:"audio/23_Chapter 1.mp3"},{jp:"右側に温かいお風呂、左側に水風呂があります。",en:"There's a warm bath area on the right and a cold bath on the left.",audio:"audio/24_Chapter 1.mp3"},{jp:"トイレはこちらです。",en:"The restroom is right here.",audio:"audio/25_Chapter 1.mp3"}]},{titleJP:"【着替え】",titleEN:"Changing",lines:[{jp:"これに着替えてください。",en:"Please change into these clothes.",audio:"audio/27_Chapter 1.mp3"},{jp:"着替えが終わったらiPadからメッセージを送ってください。",en:"When you're ready, please send me a message from the iPad.",audio:"audio/28_Chapter 1.mp3"},{jp:"今の時間（〇〇:〇〇）から支度の時間をスタートします。",en:"We'll start your prep time from the current time.",audio:"audio/29_Chapter 1.mp3"},{jp:"説明は以上ですが、何か質問はありますか？",en:"That's all for the explanation — do you have any questions?",audio:"audio/30_Chapter 1.mp3"}]},{titleJP:"【施術中】",titleEN:"During Treatment",lines:[{jp:"フットバスをするのでソファにおかけください。",en:"We'll start with a foot bath. Please have a seat on the couch.",audio:"audio/32_Chapter 1.mp3"},{jp:"施術用にベッドを作るので少しお待ちください。",en:"I'll prepare the bed for your massage — please wait just a moment.",audio:"audio/33_Chapter 1.mp3"},{jp:"うつ伏せに寝てください。",en:"Please lie face down.",audio:"audio/34_Chapter 1.mp3"},{jp:"枕は寝心地どうですか？",en:"Is the pillow comfortable?",audio:"audio/35_Chapter 1.mp3"},{jp:"顔を埋める枕もありますが変えますか？",en:"We also have a face cradle — would you like to switch?",audio:"audio/36_Chapter 1.mp3"},{jp:"強さはいかがですか？",en:"How's the pressure?",audio:"audio/37_Chapter 1.mp3"},{jp:"強くする／弱くする",en:"A little stronger, or a little lighter?",audio:"audio/38_Chapter 1.mp3"},{jp:"加減したい時は言ってください。",en:"Please let me know anytime if you'd like me to adjust the pressure.",audio:"audio/39_Chapter 1.mp3"},{jp:"仰向けになります。",en:"Please turn over onto your back.",audio:"audio/40_Chapter 1.mp3"},{jp:"お腹の下のクッションを抜きますね。",en:"I'll remove the cushion under your stomach.",audio:"audio/41_Chapter 1.mp3"},{jp:"トイレは行きますか？",en:"Would you like to use the restroom?",audio:"audio/42_Chapter 1.mp3"},{jp:"お水は飲みますか？",en:"Would you like some water?",audio:"audio/43_Chapter 1.mp3"}]},{titleJP:"【施術後】",titleEN:"After Treatment",lines:[{jp:"以上で施術は終わりです。ありがとうございました。",en:"That's the end of your session. Thank you very much.",audio:"audio/45_Chapter 1.mp3"},{jp:"お部屋利用の時間は残り〇分です。",en:"You have about a few minutes left for room use.",audio:"audio/46_Chapter 1.mp3"},{jp:"〇分後にお会計を持ってきます。",en:"I'll bring the check in a few minutes.",audio:"audio/47_Chapter 1.mp3"},{jp:"（30分以上ゆっくりする場合は、着替え終わったらまたメッセージを送ってください。）",en:"If you'd like to relax for more than thirty minutes, please send me a message once you've finished changing.",audio:"audio/48_Chapter 1.mp3"}]}];
 
-    // ====== State ======
-    let sectionIdx = 0, lineIdx = 0;
-    const autoAdvance = true;
-    const praiseThreshold = 80; // speak praise at >= 80%
-    const advanceThreshold = 60; // auto-advance at >= 60%
-    let currentAudio = null;
+let sec=0,line=0,audio=null;
+const $=(id)=>document.getElementById(id);
+const btns=['listen','slow','repeat'];
 
-    // ====== Elements ======
-    const btnListen = document.getElementById('btn-listen');
-    const btnListenSlow = document.getElementById('btn-listen-slow');
-    const btnRepeat = document.getElementById('btn-repeat');
-    const btnPrev = document.getElementById('btn-prev');
-    const btnNext = document.getElementById('btn-next');
-    const progressEl = document.getElementById('progress');
-    const titleRow = document.getElementById('title-row');
-    const lineEN = document.getElementById('line-en');
-    const lineJP = document.getElementById('line-jp');
-    const feedback = document.getElementById('feedback');
-    const list = document.getElementById('line-list');
-    const chips = document.getElementById('section-chips');
+const normalize=s=>(s||'').toLowerCase().replace(/[^a-z'\s]/g,'').replace(/\s+/g,' ').trim();
+const similarity=(a,b)=>{
+  const A=new Set(normalize(a).split(' ')),B=new Set(normalize(b).split(' '));
+  if(!A.size&&!B.size)return 1;
+  let c=0;A.forEach(w=>B.has(w)&&c++);
+  return c/new Set([...A,...B]).size;
+};
 
-    // ====== UI ======
-    function buildChips(){
-      chips.innerHTML = '';
-      sections.forEach((s,i)=>{
-        const b = document.createElement('button');
-        b.className = 'chip' + (i===sectionIdx? ' active':'');
-        b.textContent = s.titleJP;
-        b.onclick = ()=>{ sectionIdx=i; lineIdx=0; hideFeedback(); render(); buildList(); buildChips(); };
-        chips.appendChild(b);
-      });
+const setButtons=(disabled)=>btns.forEach(id=>$(id).disabled=disabled);
+const hideMsg=()=>{$('feedback').style.display='none';$('feedback').className='feedback';};
+
+const play=(file,rate=1)=>new Promise((ok,fail)=>{
+  audio?.pause();
+  audio=new Audio(file);
+  audio.playbackRate=rate;
+  audio.onended=()=>{audio=null;ok()};
+  audio.onerror=()=>{audio=null;fail()};
+  audio.play().catch(fail);
+});
+
+const showMsg=(msg,good=false)=>{
+  const f=$('feedback');
+  f.textContent=msg;
+  f.className=good?'feedback good':'feedback';
+  f.style.display='block';
+};
+
+const nav=(dir)=>{
+  const s=data[sec];
+  if(dir>0){
+    if(line+1<s.lines.length)line++;
+    else if(sec+1<data.length){sec++;line=0;}
+  }else{
+    if(line>0)line--;
+    else if(sec>0){sec--;line=data[sec].lines.length-1;}
+  }
+  hideMsg();render();
+};
+
+const render=()=>{
+  const s=data[sec],l=s.lines[line];
+  $('title').textContent=`${s.titleJP} / ${s.titleEN}`;
+  $('en').textContent=l.en;
+  $('jp').textContent=l.jp;
+  $('progress').textContent=`進捗: セクション ${sec+1}/${data.length} • フレーズ ${line+1}/${s.lines.length}`;
+  
+  $('chips').innerHTML=data.map((s,i)=>
+    `<button class="chip${i===sec?' active':''}" onclick="sec=${i};line=0;hideMsg();render()">${s.titleJP}</button>`
+  ).join('');
+  
+  $('list').innerHTML=data[sec].lines.map((l,i)=>
+    `<button class="lineBtn${i===line?' active':''}" onclick="line=${i};hideMsg();render()">
+      <div class="muted">${i+1}番目</div><div class="en">${l.en}</div><div class="jp">${l.jp}</div>
+    </button>`
+  ).join('');
+};
+
+const playAudio=async(slow)=>{
+  hideMsg();
+  setButtons(true);
+  try{await play(data[sec].lines[line].audio,slow?0.7:1);}
+  catch(e){showMsg('オーディオファイルの読み込みエラー');}
+  finally{setButtons(false);}
+};
+
+const repeatMode=async()=>{
+  const SR=window.webkitSpeechRecognition||window.SpeechRecognition;
+  await playAudio(false);
+  if(!SR)return showMsg('音声認識に対応していません。Chromeをお試しください。');
+  
+  showMsg('聞いています...');
+  const rec=new SR();
+  rec.lang='en-US';
+  rec.interimResults=false;
+  rec.maxAlternatives=1;
+  
+  rec.onresult=async(e)=>{
+    const said=e.results[0]?.[0]?.transcript||'';
+    const score=Math.round(similarity(data[sec].lines[line].en,said)*100);
+    if(score>=80){
+      showMsg(`✅ 素晴らしい！ 類似度: ${score}%`,true);
+      try{window.speechSynthesis.speak(new SpeechSynthesisUtterance('Great job!'));}catch{}
+      if(score>=60)setTimeout(()=>nav(1),1500);
+    }else{
+      showMsg(`あなたの発音: "${said}" – 類似度: ${score}%`);
+      if(score>=60)setTimeout(()=>nav(1),1500);
     }
+  };
+  
+  rec.onerror=e=>showMsg(`認識エラー: ${e.error||'不明'}`);
+  try{rec.start();}catch{}
+};
 
-    function buildList(){
-      list.innerHTML = '';
-      const curSec = sections[sectionIdx];
-      curSec.lines.forEach((l, idx)=>{
-        const b = document.createElement('button');
-        b.className = 'lineBtn' + (idx===lineIdx? ' active':'');
-        b.innerHTML = `<div class="muted">${idx+1}番目</div><div class="en">${l.en}</div><div class="jp">${l.jp}</div>`;
-        b.onclick = ()=>{ lineIdx=idx; hideFeedback(); render(); buildList(); };
-        list.appendChild(b);
-      });
-    }
+$('listen').onclick=()=>playAudio(false);
+$('slow').onclick=()=>playAudio(true);
+$('repeat').onclick=repeatMode;
+$('prev').onclick=()=>nav(-1);
+$('next').onclick=()=>nav(1);
 
-    function render(){
-      const sec = sections[sectionIdx];
-      const line = sec.lines[lineIdx];
-      titleRow.textContent = `${sec.titleJP} / ${sec.titleEN}`;
-      lineEN.textContent = line.en;
-      lineJP.textContent = line.jp;
-      progressEl.textContent = `進捗: セクション ${sectionIdx+1}/${sections.length} • フレーズ ${lineIdx+1}/${sec.lines.length}`;
-    }
-
-    // ====== Audio Helpers ======
-    function playAudio(audioFile, playbackRate = 1.0){
-      return new Promise((resolve, reject) => {
-        if (currentAudio) {
-          currentAudio.pause();
-          currentAudio = null;
-        }
-        
-        currentAudio = new Audio(audioFile);
-        currentAudio.playbackRate = playbackRate;
-        
-        currentAudio.onended = () => {
-          currentAudio = null;
-          resolve();
-        };
-        
-        currentAudio.onerror = (e) => {
-          currentAudio = null;
-          reject(new Error(`オーディオファイルの読み込みエラー: ${audioFile}`));
-        };
-        
-        currentAudio.play().catch(reject);
-      });
-    }
-
-    // ====== Speech Recognition Helpers ======
-    function normalize(s){ return (s||'').toLowerCase().replace(/[^a-z'\s]/g,'').replace(/\s+/g,' ').trim(); }
-    function similarity(a,b){
-      const A = new Set(normalize(a).split(' '));
-      const B = new Set(normalize(b).split(' '));
-      if (!A.size && !B.size) return 1;
-      let inter=0; A.forEach(w=>{ if(B.has(w)) inter++; });
-      return inter / new Set([...A, ...B]).size;
-    }
-
-    function getRecognition(){
-      const SR = window.webkitSpeechRecognition || window.SpeechRecognition;
-      if (!SR) return null;
-      const rec = new SR();
-      rec.lang = 'en-US';
-      rec.interimResults = false;
-      rec.maxAlternatives = 1;
-      return rec;
-    }
-
-    function hideFeedback(){ feedback.style.display='none'; feedback.textContent=''; feedback.className='feedback'; }
-
-    async function playCurrent(slow){
-      hideFeedback();
-      const line = sections[sectionIdx].lines[lineIdx];
-      const rate = slow ? 0.7 : 1.0;
-      
-      try {
-        btnListen.disabled = true;
-        btnListenSlow.disabled = true;
-        btnRepeat.disabled = true;
-        await playAudio(line.audioFile, rate);
-      } catch(error) {
-        feedback.style.display='block';
-        feedback.textContent = error.message;
-      } finally {
-        btnListen.disabled = false;
-        btnListenSlow.disabled = false;
-        btnRepeat.disabled = false;
-      }
-    }
-
-    function next(){
-      const sec = sections[sectionIdx];
-      if (lineIdx + 1 < sec.lines.length) lineIdx++;
-      else if (sectionIdx + 1 < sections.length){ sectionIdx++; lineIdx=0; }
-      hideFeedback();
-      render(); buildList(); buildChips();
-    }
-
-    function prev(){
-      if (lineIdx>0) lineIdx--; else if (sectionIdx>0){ sectionIdx--; lineIdx = sections[sectionIdx].lines.length-1; }
-      hideFeedback();
-      render(); buildList(); buildChips();
-    }
-
-    async function repeatMode(){
-      const rec = getRecognition();
-      
-      try {
-        await playCurrent(false);
-      } catch(error) {
-        return;
-      }
-      
-      if (!rec){
-        feedback.style.display='block';
-        feedback.textContent = '音声認識に対応していません。Chromeをお試しください。';
-        return;
-      }
-      
-      feedback.style.display='block';
-      feedback.textContent = '聞いています...';
-      
-      rec.onresult = async (ev)=>{
-        const said = (ev.results[0] && ev.results[0][0] && ev.results[0][0].transcript) || '';
-        const target = sections[sectionIdx].lines[lineIdx].en;
-        const score = Math.round(similarity(target, said) * 100);
-        
-        if (score >= praiseThreshold){
-          feedback.className = 'feedback good';
-          feedback.textContent = `✅ 素晴らしい！ 類似度: ${score}%`;
-          // Play praise audio using a simple utterance (since we don't have a praise audio file)
-          try {
-            const praise = new SpeechSynthesisUtterance('Great job!');
-            window.speechSynthesis.speak(praise);
-          } catch(e) {}
-        } else {
-          feedback.className = 'feedback';
-          feedback.textContent = `あなたの発音: "${said}" – 類似度: ${score}%`;
-        }
-        
-        if (autoAdvance && score >= advanceThreshold) {
-          setTimeout(() => next(), 1500);
-        }
-      };
-      
-      rec.onerror = (e)=>{ feedback.textContent = `認識エラー: ${e.error||'不明'}`; };
-      rec.onend = ()=>{};
-      
-      try { rec.start(); } catch(err) {}
-    }
-
-    // Bindings
-    btnListen.onclick = ()=>playCurrent(false);
-    btnListenSlow.onclick = ()=>playCurrent(true);
-    btnRepeat.onclick = ()=>repeatMode();
-    btnPrev.onclick = prev;
-    btnNext.onclick = next;
-
-    // Initial
-    buildChips();
-    buildList();
-    render();
+render();
   </script>
 </body>
 </html>
